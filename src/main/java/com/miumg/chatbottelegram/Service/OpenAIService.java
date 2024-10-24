@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class OpenAIService {
     // private static final String API_KEY = "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";
-    private static final String API_KEY = "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";
+    // private static final String API_KEY = "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";
    
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
