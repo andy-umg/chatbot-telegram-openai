@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 @Service
 public class OpenAIService {
 
@@ -19,31 +18,33 @@ public class OpenAIService {
 
     public String obtenerRespuesta(String prompt) throws Exception {
         // Configuración de la solicitud HTTP
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost request = new HttpPost(API_URL);
-        request.addHeader("Content-Type", "application/json");
-        request.addHeader("Authorization", "Bearer " + API_KEY);
+        // CloseableHttpClient httpClient = HttpClients.createDefault();
+        // HttpPost request = new HttpPost(API_URL);
+        // request.addHeader("Content-Type", "application/json");
+        // request.addHeader("Authorization", "Bearer " + API_KEY);
 
         // Construcción del cuerpo de la solicitud
         // String jsonInputString = String.format(
-        //     "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}", 
-        //     prompt
+        // "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\",
+        // \"content\": \"%s\"}]}",
+        // prompt
         // );
-        String jsonInputString = String.format(
-            "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\", \"content\": \"%s\"}]}", 
-            prompt
-        );
+        // String jsonInputString = String.format(
+        // "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\",
+        // \"content\": \"%s\"}]}",
+        // prompt
+        // );
 
-        request.setEntity(new StringEntity(jsonInputString));
+        // request.setEntity(new StringEntity(jsonInputString));
 
-        // Envío de la solicitud y manejo de la respuesta
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
-            String jsonResponse = EntityUtils.toString(response.getEntity());
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+        // // Envío de la solicitud y manejo de la respuesta
+        // try (CloseableHttpResponse response = httpClient.execute(request)) {
+        // String jsonResponse = EntityUtils.toString(response.getEntity());
+        // ObjectMapper objectMapper = new ObjectMapper();
+        // JsonNode jsonNode = objectMapper.readTree(jsonResponse);
 
-            // Extraer la respuesta del modelo
-            return jsonNode.get("choices").get(0).get("message").get("content").asText();
-        }
-    } 
+        // // Extraer la respuesta del modelo
+        // return jsonNode.get("choices").get(0).get("message").get("content").asText();
+        // }
+    }
 }
