@@ -14,6 +14,8 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.Objects;
+
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.miumg.chatbottelegram.repository" )
@@ -41,13 +43,13 @@ public class JpaConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.miumg.chatbottelegram.model") // Ajusta el paquete según tu estructura
+                .packages("com.miumg.chatbottelegram.model")
                 .persistenceUnit("default")
                 .build();
     }
 
     @Bean
     public PlatformTransactionManager transactionManager(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory.getObject());
+        return new JpaTransactionManager(Objects.requireNonNull(entityManagerFactory.getObject()));
     }
 }
