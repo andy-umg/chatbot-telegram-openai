@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -25,7 +28,13 @@ public class ChatMessage {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answer;
 
-    @Column(nullable = false)
+    @Column()
     private String client;
 
+    @Column(nullable = false)
+    private String chatId;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creationDate;
 }
