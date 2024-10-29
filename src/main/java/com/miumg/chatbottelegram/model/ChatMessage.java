@@ -32,7 +32,7 @@ public class ChatMessage {
     private String client;
 
     @Column(nullable = false)
-    private String chatId;
+    private Long chatId;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

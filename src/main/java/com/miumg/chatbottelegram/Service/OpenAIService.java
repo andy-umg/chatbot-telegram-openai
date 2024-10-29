@@ -15,11 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Slf4j
 @Service
 public class OpenAIService {
-    private static final String API_KEY = "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";
-    private static final String API_URL = "https://api.openai.com/v1/chat/completions";
+    private static final String API_KEY = "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";
+    private static final String API_URL = "https://api.groq.com/openai/v1/chat/completions" ;
 
     public String obtenerRespuesta(String prompt) throws Exception {
-        log.info("Este es el prompt: " + prompt);
+
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost request = new HttpPost(API_URL);
         request.addHeader("Content-Type", "application/json");
@@ -27,9 +27,22 @@ public class OpenAIService {
 
         // Construcción del cuerpo de la solicitud
         String jsonInputString = String.format(
-                "{\"model\": \"gpt-3.5-turbo\", \"messages\": [{\"role\": \"user\",\"content\": \"%s\"}]}",
+                "{\n" +
+                        "  \"messages\": [\n" +
+                        "    {\n" +
+                        "      \"role\": \"user\",\n" +
+                        "      \"content\": \"%s\"\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"model\": \"llama3-8b-8192\",\n" +
+                        "  \"temperature\": 1,\n" +
+                        "  \"max_tokens\": 1024,\n" +
+                        "  \"top_p\": 1,\n" +
+                        "  \"stream\": false,\n" +
+                        "  \"stop\": null\n" +
+                        "}",
                 prompt);
-
+        log.info("Esto te mando: " + jsonInputString);
         request.setEntity(new StringEntity(jsonInputString));
 
         // Envío de la solicitud y manejo de la respuesta

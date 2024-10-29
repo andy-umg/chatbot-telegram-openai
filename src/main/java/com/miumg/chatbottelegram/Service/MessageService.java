@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class MessageService {
@@ -19,12 +21,15 @@ public class MessageService {
     }
 
     public boolean deleteById(Long productId) {
-        //return products.removeIf(p -> p.getProductId().equals(productId));
         if(chatMessageRepository.existsById(productId)) {
             chatMessageRepository.deleteById(productId);
             return true;
         }
         return false;
+    }
+
+    public List<ChatMessage> getLastMessages(String cliente) {
+        return chatMessageRepository.findLast3MessagesByClient(cliente).subList(0, 3);
     }
 
 }
