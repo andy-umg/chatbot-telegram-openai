@@ -1,12 +1,14 @@
 package com.miumg.chatbottelegram.Controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.miumg.chatbottelegram.model.Request;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
 import com.miumg.chatbottelegram.Service.OpenAIService;
 
+@Slf4j
 @RestController
+@RequestMapping("/api")
 public class ChatBotController {
 
     private final OpenAIService openAIService;
@@ -15,10 +17,12 @@ public class ChatBotController {
         this.openAIService = openAIService;
     }
 
-    @GetMapping("/preguntar")
-    public String preguntar(@RequestParam String mensaje) {
+    @PostMapping("/preguntar")
+    public String preguntar(@RequestBody Request message) {
+        log.info("Estes es el body de la peticion: " + message.getRequest() );
+        String requestMessage = message.getRequest();
         try {
-            return openAIService.obtenerRespuesta(mensaje);
+            return openAIService.obtenerRespuesta(requestMessage);
         } catch (Exception e) {
             return "Error al obtener la respuesta: " + e.getMessage();
         }
