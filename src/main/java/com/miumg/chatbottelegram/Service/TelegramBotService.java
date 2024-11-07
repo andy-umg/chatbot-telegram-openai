@@ -44,6 +44,10 @@ public class TelegramBotService extends TelegramLongPollingBot  {
                 if (Objects.equals(messageText, "/start")) {
                     iniciarConversacion(chatId);
                 } else if ("waitting_name".equals(userStates.get(chatId))) {
+                    if(userNameTelegram == null){
+                        message.getFrom().setUserName(messageText);
+                        userNameTelegram = message.getFrom().getUserName();
+                    }
                     obtenerNombreUsuario(chatId, messageText,userNameTelegram );
                 } else {
                     sendUserMessageAI(chatId, messageText, userNameTelegram);
@@ -77,6 +81,7 @@ public class TelegramBotService extends TelegramLongPollingBot  {
 
         }else{
             String response = "¡Mucho gusto, " + name + "! ¿En qué puedo ayudarte?";
+
             sendMessage(chatId, response);
 
         }
