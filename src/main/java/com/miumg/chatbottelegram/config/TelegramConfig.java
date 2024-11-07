@@ -1,6 +1,6 @@
 package com.miumg.chatbottelegram.config;
 
-import com.miumg.chatbottelegram.bot.TelegramBot;
+import com.miumg.chatbottelegram.Service.TelegramBotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +14,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class TelegramConfig {
 
     @Bean
-    public TelegramBot telegramBot(@Value("${bot.name}") String botName,
+    public TelegramBotService telegramBot(@Value("${bot.name}") String botName,
                        @Value("${bot.token}")String botToken){
-        TelegramBot telegramBot = new TelegramBot(botName,botToken);
+        TelegramBotService telegramBot = new TelegramBotService(botName,botToken);
         try {
             var telegramBotApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotApi.registerBot(telegramBot);
