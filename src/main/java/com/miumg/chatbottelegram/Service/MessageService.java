@@ -29,7 +29,14 @@ public class MessageService {
     }
 
     public List<ChatMessage> getLastMessages(String cliente) {
-        return chatMessageRepository.findLast3MessagesByClient(cliente).subList(0, 3);
+
+        List<ChatMessage> response = chatMessageRepository.findLast3MessagesByClient(cliente);
+        if(!response.isEmpty()){
+            return response.subList(0, 3);
+        }else{
+            return response;
+        }
+
     }
 
 }
