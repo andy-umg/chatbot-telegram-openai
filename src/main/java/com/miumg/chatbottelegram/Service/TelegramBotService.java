@@ -1,5 +1,6 @@
 package com.miumg.chatbottelegram.Service;
 
+import com.miumg.chatbottelegram.model.BotCommand;
 import com.miumg.chatbottelegram.model.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.HashMap;
@@ -27,6 +29,9 @@ public class TelegramBotService extends TelegramLongPollingBot  {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private BotCommandService botCommandService;
 
     public TelegramBotService(String botName, String botToken) {
         super (botToken);
@@ -52,6 +57,11 @@ public class TelegramBotService extends TelegramLongPollingBot  {
                 } else {
                     sendUserMessageAI(chatId, messageText, userNameTelegram);
                 }
+                if ("/help".equals(messageText) || "/start".equals(messageText)) {
+                    registerCommand(chatId, messageText, userNameTelegram);
+                    sendHelpMessage(chatId);
+                }
+
             } catch (Exception e) {
                 log.error("Error durante la ejecución de la API de Telegram: {}", e.getMessage());
             }
@@ -127,4 +137,28 @@ public class TelegramBotService extends TelegramLongPollingBot  {
     public String getBotUsername() {
         return this.botName;
     }
+    private void sendHelpMessage(Long chatId) throws TelegramApiException {
+        String helpText = """
+        ¡Hola! Estos son los comandos que puedes utilizar:
+        
+        /start - Inicia la conversación con el bot
+        /help - Muestra esta lista de comandos y explica cómo usar el bot
+        /info - Recibe información sobre este bot y sus funciones
+        
+        Si tienes alguna otra pregunta, ¡no dudes en preguntar!
+        """;
+
+        sendMessage(chatId, helpText);
+    }
+
+
+    private void registerCommand(Long chatId, String command, String client) {
+        BotCommand botCommand = new BotCommand();
+        botCommand.setCommand(command);
+        botCommand.setClient(client);
+        botCommand.setChatId(chatId);
+        botCommand.setCommandDate(LocalDateTime.now());
+        botCommandService.save(botCommand);
+    }
+
 }
